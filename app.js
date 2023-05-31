@@ -1,11 +1,14 @@
-const express = require('express')
-const app = express()
-const port = 3000
+var http = require('http');
+var express = require('express');
 
-app.get('/', (req, res) => {
-  res.send('Hola Dapta TECH')
-})
+var app = express();
 
-app.listen(port, () => {
-  console.log(`Ejecutandose en el puerto ---> ${port}`)
-})
+app.set('port', process.env.PORT || 3005); 
+app.set('views', __dirname + '/app/server/views'); 
+app.set('view engine', 'ejs'); 
+app.use(express.static(__dirname + '/app/public'));
+require('./app/routes')(app);
+
+http.createServer(app).listen(app.get('port'), function(){
+	console.log('Sistema ' + app.get('port') + ' en el puerto!!!');
+});
